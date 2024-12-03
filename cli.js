@@ -12,7 +12,7 @@ const contractJson = require('./build/contracts/ChainOfCustody.json');
 const contract = new web3.eth.Contract(
     contractJson.abi,
     contractJson.networks['5777'].address
-  );
+);
 
 // Environment variables for passwords
 const PASSWORDS = {
@@ -291,41 +291,60 @@ program
     .action(async () => {
         try {
             const account = await getAccount();
-            const verificationResult = await contract.methods.verify().call();
-
-            console.log(`> Transactions in blockchain: ${verificationResult.transactionCount}`);
+            let allItems = [];
+            let itemCount = 0;
             
-            if (!verificationResult.hasError) {
-                console.log('> State of blockchain: CLEAN');
-                process.exit(0); // Success
-            } else {
-                console.log('> State of blockchain: ERROR');
-                console.log(`> Bad block: ${verificationResult.badBlock}`);
-                switch (verificationResult.errorType) {
-                    case 'Invalid hash chain':
-                        console.log('> Parent block: NOT FOUND');
-                        break;
-                    case 'Multiple children':
-                        console.log(`> Parent block: ${verificationResult.parentBlock}`);
-                        console.log('> Two blocks were found with the same parent.');
-                        break;
-                    case 'Content mismatch':
-                        console.log('> Block contents do not match block checksum.');
-                        break;
-                    case 'Post removal action':
-                        console.log('> Item checked out or checked in after removal from chain.');
-                        break;
-                    default:
-                        console.log('> Unknown error type.');
+            // Get all items count
+            while (true) {
+                try {
+                    const item = await contract.methods.allItemIds(itemCount).call();
+                    allItems.push(item);
+                    itemCount++;
+                } catch (error) {
+                    break;
                 }
-                process.exit(1); // Failure
+            }
+            
+            console.log(`> Transactions in blockchain: ${itemCount}`);
+            
+            try {
+                const verificationResult = await contract.methods.verify().call();
+                
+                if (!verificationResult.hasError) {
+                    console.log('> State of blockchain: CLEAN');
+                } else {
+                    console.log('> State of blockchain: ERROR');
+                    
+                    if (verificationResult.badBlock !== '0x0000000000000000000000000000000000000000000000000000000000000000') {
+                        console.log(`> Bad block:\n${verificationResult.badBlock}`);
+                    }
+                    
+                    if (verificationResult.errorType === "Invalid hash chain") {
+                        console.log('> Parent block: NOT FOUND');
+                    } 
+                    else if (verificationResult.errorType === "Multiple children") {
+                        console.log(`> Parent block:\n${verificationResult.parentBlock}`);
+                        console.log('> Two blocks were found with the same parent.');
+                    }
+                    else if (verificationResult.errorType === "Content mismatch") {
+                        console.log('> Block contents do not match block checksum.');
+                    }
+                    else if (verificationResult.errorType === "Post removal action") {
+                        console.log('> Item checked out or checked in after removal from chain.');
+                    }
+                }
+            } catch (error) {
+                console.log('> State of blockchain: ERROR');
+                if (error.message.includes('Invalid number of parameters')) {
+                    console.log('> Error accessing blockchain data');
+                } else {
+                    console.log('> Blockchain verification failed');
+                }
             }
         } catch (error) {
-            console.error('Error during verification:', error.message);
-            process.exit(1); // Failure
+            console.error('Error:', error.message);
+            process.exit(1);
         }
     });
-
-
 
 program.parse(process.argv);
