@@ -1,0 +1,26 @@
+{
+    "name": "chain-of-custody",
+    "version": "1.0.0",
+    "description": "Blockchain Chain of Custody System",
+    "main": "cli.js",
+    "scripts": {
+      "start": "node cli.js",
+      "ganache": "ganache -p 7545 -h 127.0.0.1",
+      "truffle-compile": "truffle compile",
+      "truffle-migrate": "truffle migrate --network development",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+      "commander": "^12.1.0",
+      "crypto-js": "^4.1.1",
+      "dotenv": "^16.0.3",
+      "uuid": "^9.0.1",
+      "web3": "^1.10.4",
+      "yargs": "^17.7.1"
+    },
+    "devDependencies": {
+      "ganache": "^7.7.3",
+      "truffle": "^5.7.1"
+    }
+  }
+  
