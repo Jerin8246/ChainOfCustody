@@ -1,5 +1,14 @@
 # Blockchain Chain of Custody System
 
+## Group 12
+
+## Members
+- Rajanandini Bandi
+- Vishnu Nandam
+- Shray Soorma
+- Brennan Chan
+- Jerin Joseph
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -63,13 +72,68 @@ This project implements a **Blockchain-based Chain of Custody System** designed 
     - Download and install Ganache from the official site: https://archive.trufflesuite.com/ganache/
     - Start Ganache and ensure the RPC Server is http://127.0.0.1:7545 and Network ID is 5777.
 
-4. Compile Smart Contracts:
+4. **Compile Smart Contracts**:
     - truffle compile
 
-5. Deploy Smart Contracts:
+5. **Deploy Smart Contracts**:
     -  truffle migrate --reset
 
-6. Verifications
+6. **Verifications**:
     - Confirm Truffle installation
         npx truffle version
     - Ensure Ganache is running and connected.
+
+## Usage
+
+### Examples of Commands
+
+1. **Initialize Blockchain:**
+    - node cli.js init
+
+2. **Add Evidence**
+    - node cli.js add -c c84e339e-5c0f-4f4d-84c5-bb79a3c1d2a2 -i 1004820154 -p C67C
+
+3. **Show History of an Item:**
+    - node cli.js show history -i 1004820154 -p A65A
+
+4. **Check Out Evidence:**
+    - node cli.js checkout -i 1004820154 -p A65A
+
+5. **Check In Evidence:**
+    - node cli.js checkin -i 1004820154 -p A65A
+
+6. **Verify Blockchain Integrity:**
+    - node cli.js verify
+
+7. **Show All Cases:**
+    - node cli.js show cases
+
+8. **Add Multiple Items to a Case:**
+    - node cli.js add -c c84e339e-5c0f-4f4d-84c5-bb79a3c1d2a2 -i 1004820155 1004820156 -p C67C
+
+9. **Remove Evidence:**
+    - node cli.js remove -i 1004820154 -y DISPOSED -p C67C
+
+10. **To checkout more commands to perform the full functionaliy of the program click the link below
+    - https://docs.google.com/document/d/1Y_9ZyGNDw3N-qCHLIq4i3fSF70D_3KzVWxXe6HTH-oE/edit?tab=t.0
+
+## Project Details
+
+### Blockchain Design
+
+- **Smart Contracts**: Written in Solidity and deployed on the Ethereum blockchain.
+- **Data Storage**: Immutable evidence blocks with cryptographic linkage.
+
+### CLI Design
+
+- **Interface**: Built using `commander.js`.
+- **Interaction**: Provides structured commands for evidence management.
+
+## Contributors
+
+**Group 12**:
+- Rajanandini Bandi
+- Vishnu Nandam
+- Shray Soorma
+- Brennan Chan
+- Jerin Joseph
