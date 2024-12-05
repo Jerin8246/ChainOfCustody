@@ -73,10 +73,10 @@ This project implements a **Blockchain-based Chain of Custody System** designed 
     - Start Ganache and ensure the RPC Server is http://127.0.0.1:7545 and Network ID is 5777.
 
 4. **Compile Smart Contracts**:
-    - truffle compile
+    - npx truffle compile
 
 5. **Deploy Smart Contracts**:
-    -  truffle migrate --reset
+    -  npx truffle migrate --reset
 
 6. **Verifications**:
     - Confirm Truffle installation
